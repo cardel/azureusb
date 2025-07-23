@@ -1,0 +1,10 @@
+{
+  "ImageRepository": {
+    "ImageIdentifier": "cardel87/ejemplousb:latest",
+    "ImageRepositoryType": "DOCKER_HUB",
+    "ImageConfiguration": {
+      "Port": "5000"
+    }
+  },
+  "AutoDeploymentsEnabled": true
+}
