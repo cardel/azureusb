@@ -11,7 +11,7 @@ def hello_world():
     now = datetime.now()
     current_time = now.strftime("%Y-%m-%d %H:%M:%S")
     return json.dumps({
-        "message": "La hora actual es",
+        "message": "La hora actual es la siguiente:",
         "timestamp": current_time
     })
 
