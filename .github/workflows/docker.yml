@@ -1,22 +1,32 @@
-name: build_image
+name: build_and_push_image
+
 on:
   push:
+    branches: [ "master" ]
     paths:
-      - "/**"
+      - "**"
+
 jobs:
   build:
     runs-on: ubuntu-latest
+
     steps:
-      - name: ACR build
-        id: acr
-        uses: azure/acr-build@v1
-        with:
-          service_principal: ${{ secrets.service_principal }}
-          service_principal_password: ${{ secrets.service_principal_password }}
-          tenant: ${{ secrets.tenant }}
-          registry: ${{ secrets.registry }}
-          repository: ${{ secrets.repository }}
-          image: image
-          folder: .
-          dockerfile: Dockerfile
-          branch: master
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Login to Azure
+      uses: azure/login@v1
+      with:
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+    - name: Login to ACR
+      run: |
+        az acr login --name ${{ secrets.ACR_NAME }}
+
+    - name: Build Docker image
+      run: |
+        docker build -t ${{ secrets.ACR_NAME }}.azurecr.io/${{ secrets.REPOSITORY }}:latest .
+
+    - name: Push Docker image
+      run: |
+        docker push ${{ secrets.ACR_NAME }}.azurecr.io/${{ secrets.REPOSITORY }}:latest
