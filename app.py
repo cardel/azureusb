@@ -12,11 +12,15 @@ def hello_world():
     now = datetime.now()
     current_time = now.strftime("%Y-%m-%d %H:%M:%S")
     temperature = requests.get("https://api.open-meteo.com/v1/forecast?latitude=3.4372&longitude=-76.5225&hourly=temperature_2m")
+
+    temperatures = temperature.json()['hourly']['temperature_2m']
+
     return json.dumps({
         "message": "La hora actual:",
         "timestamp": current_time,
         "mensaje_temperatura":"La temperatura en Cali es",
-        "temperatura": temperature.json()['hourly']['temperature_2m'][0]
+        "temperatura": temperature.json()['hourly']['temperature_2m'][0],
+        "temperaturas": temperatures
     })
 
 #this route add two numbers sended by GET method
