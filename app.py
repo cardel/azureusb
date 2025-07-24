@@ -4,15 +4,19 @@ import os
 import json
 from datetime import datetime
 app = Flask(__name__)
+import requests
 
 @app.route('/')
 def hello_world():
     #Retornar la hora y dia actual
     now = datetime.now()
     current_time = now.strftime("%Y-%m-%d %H:%M:%S")
+    temperature = requests.get("https://api.open-meteo.com/v1/forecast?latitude=3.4372&longitude=-76.5225&hourly=temperature_2m")
     return json.dumps({
-        "message": "La hora actual es la siguiente:",
-        "timestamp": current_time
+        "message": "La hora actual:",
+        "timestamp": current_time,
+        "mensaje_temperatura":"La temperatura en Cali es",
+        "temperatura": temperature.json()['hourly']['temperature_2m'][0]
     })
 
 #this route add two numbers sended by GET method
